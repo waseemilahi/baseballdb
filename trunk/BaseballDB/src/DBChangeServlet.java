@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -51,7 +52,7 @@ public class DBChangeServlet extends HttpServlet {
         	args[1] = request.getParameter("ADDRESS");
         	//Corporation
         	args[2] = request.getParameter("CORPORATION");
-        	createNewTuple("AGENT",args);
+        	createNewTuple("AGENT",args, response);
         }
         else if(formReq.equals("agent update")){
         	
@@ -68,7 +69,24 @@ public class DBChangeServlet extends HttpServlet {
         	args[1] = request.getParameter("NAME");
         	args[2] = request.getParameter("YEARBUILT");
         	args[3] = request.getParameter("TYPE");
-        	createNewTuple("BALLPARK",args);
+        	/*
+        	int tmpyear;
+        	try{
+        	tmpyear = Integer.parseInt(args[2]);
+        	if(tmpyear<1000)
+        	{
+        		errorprint("<BR> Invalid Entry for Year Built Field! TRY AGAIN.<BR>","ballpark",response);
+        	}
+        	else createNewTuple("BALLPARK",args,response);
+        	}
+        	catch(NumberFormatException n)
+        	{
+        		errorprint("<BR>ENTER A FOUR DIGIT NUMBER FOR THE YEAR BUILT FIELD.<BR>","ballpark",response);
+        	}
+        	*/
+        	if(verifyErrors("ballpark",args,response)){
+        		createNewTuple("BALLPARK",args,response);
+        	}
         }
         else if(formReq.equals("ballpark update")){
         	
@@ -83,7 +101,10 @@ public class DBChangeServlet extends HttpServlet {
         	String[] args = new String[2];
         	args[0] = request.getParameter("LEAGUE");
         	args[1] = request.getParameter("LOCATION");
-        	createNewTuple("DIVISION",args);
+        	//createNewTuple("DIVISION",args, response);
+        	if(verifyErrors("division",args,response)){
+        		createNewTuple("DIVISION",args,response);
+        	}
         }
         else if(formReq.equals("division update")){
         	
@@ -102,7 +123,10 @@ public class DBChangeServlet extends HttpServlet {
         	args[1] = request.getParameter("WORTH");
         	//Corporation
         	args[2] = request.getParameter("TEAM");
-        	createNewTuple("OWNER",args);
+        	//createNewTuple("OWNER",args, response);
+        	if(verifyErrors("owner",args,response)){
+        		createNewTuple("OWNER",args,response);
+        	}
         }
         else if(formReq.equals("owner update")){
         	
@@ -120,7 +144,10 @@ public class DBChangeServlet extends HttpServlet {
         	args[2] = request.getParameter("SALARY");
         	args[3] = request.getParameter("ADDRESS");
         	args[4] = request.getParameter("PARK");
-        	createNewTuple("STAFF",args);
+        	//createNewTuple("STAFF",args, response);
+        	if(verifyErrors("staff",args,response)){
+        		createNewTuple("STAFF",args,response);
+        	}
         }
         else if(formReq.equals("staff update")){
         	
@@ -137,7 +164,10 @@ public class DBChangeServlet extends HttpServlet {
         	args[2] = request.getParameter("DIVISION");
         	args[3] = request.getParameter("PARK");
         	args[4] = request.getParameter("STAFF");
-        	createNewTuple("TEAM",args);
+        	//createNewTuple("TEAM",args, response);
+        	if(verifyErrors("team",args,response)){
+        		createNewTuple("TEAM",args,response);
+        	}
         }
         else if(formReq.equals("team update")){
         	
@@ -155,16 +185,72 @@ public class DBChangeServlet extends HttpServlet {
         	args[3] = request.getParameter("SALARY");
         	args[4] = request.getParameter("AGENT");
         	args[5] = request.getParameter("TEAM");
-        	createNewTuple("PLAYER",args);
+        	//createNewTuple("PLAYER",args, response);
+        	if(verifyErrors("player",args,response)){
+        		createNewTuple("PLAYER",args,response);
+        	}
         }
         else if(formReq.equals("player update")){
         	
         }else if(formReq.equals("player delete")){
         	
         }
-		  
 	}
-	public void createNewTuple(String table, String[] args){
+	public boolean verifyErrors(String table, String[] args, HttpServletResponse response) throws IOException{
+		boolean verified = false;
+		if(table.equals("ballpark")){
+			verified = intYearCheck(response, table, args, args[2]);
+		}else if(table.equals("agent")){
+			verified = true; // No checks needed
+		}else if(table.equals("division")){
+			verified = true; // No checks needed
+		}else if(table.equals("owner")){
+			verified = intSalaryCheck(args[1], response, table, args, 0, new BigInteger("50000000000"));
+		}else if(table.equals("player")){
+			verified = intSalaryCheck(args[3], response, table, args, 0, new BigInteger("100000000"));
+		}else if(table.equals("staff")){
+			verified = intSalaryCheck(args[2], response, table, args, 0, new BigInteger("100000000"));
+		}
+		return verified;
+	}
+	public boolean intYearCheck(HttpServletResponse response, String table, String[] args, String year) throws IOException{
+		int tmpyear;
+    	try{
+    	tmpyear = Integer.parseInt(year);
+    	if(tmpyear<1000)
+    	{
+    		errorprint("<BR> Invalid Entry for Year Built Field! TRY AGAIN.<BR>",table,response);
+    	}
+    	else return true;
+    	}
+    	catch(NumberFormatException n)
+    	{
+    		errorprint("<BR>ENTER A FOUR DIGIT NUMBER FOR THE YEAR BUILT FIELD.<BR>",table,response);
+    	}
+    	return false;
+	}
+	public boolean intSalaryCheck(String salary, HttpServletResponse response, String table, String[] args, int lowVal, BigInteger highVal) throws IOException{
+		BigInteger tmpSalary;
+    	try{
+    	tmpSalary = new BigInteger(salary);
+    	if((1 == tmpSalary.compareTo(highVal)) || (-1 == tmpSalary.compareTo(new BigInteger(Integer.toString(lowVal)))))
+    	{
+    		errorprint("<BR>ENTER A VALID WORTH - Worth must be between: " + lowVal + " & " + highVal + "<BR>",table,response);
+    	}
+    	else{
+    		System.out.println("Salary Comparison: " + (tmpSalary.compareTo(highVal)) + "   &&&   " + (tmpSalary.compareTo(new BigInteger(Integer.toString(lowVal)))));
+    		return true;
+    		}
+    	}
+    	catch(NumberFormatException n)
+    	{
+    		errorprint("<BR>ENTER A VALID WORTH - Worth must be between: " + lowVal + " & " + highVal + "<BR>",table,response);
+    	}
+    	return false;
+    }
+	public void createNewTuple(String table, String[] args, HttpServletResponse response) throws IOException{
+		response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 		String userid="wki2001", password = "coms4111";
 		int primaryKey = 0;
 		 try {	
@@ -240,9 +326,26 @@ public class DBChangeServlet extends HttpServlet {
 	     catch (Exception e) {
 	             System.out.println("The database could not be accessed." );
 	             System.out.println("More information is available as follows:");
+	             out.println();
 	             e.printStackTrace();
 	     }
 	}
+	public void errorprint(String message,String tableType,HttpServletResponse response )throws IOException {
+
+		response.setContentType("text/html");
+		PrintWriter out1 = response.getWriter();
+		out1.println(message);
+		out1.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
+				"<br>" +
+				"<br>" +
+		"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">" +
+		
+		"<br>" +
+		"<input type=submit name=\"DBChange\" value=\""+ tableType + " update\">" +
+		"<input type=submit name=\"DBChange\" value=\""+ tableType + " create\">" +
+		"<input type=submit name=\"DBChange\" value=\""+ tableType + " delete\">" +
+		"</FONT></form>");
+		}
 	//format ssn 
 	public String intFormatSSN(String ssn){
 		return ssn.substring(0,3) + ssn.substring(4,6) + ssn.substring(7);
