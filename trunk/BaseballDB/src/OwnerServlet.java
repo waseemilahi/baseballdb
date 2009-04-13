@@ -144,6 +144,15 @@ public class OwnerServlet extends HttpServlet {
              out.println("</div></form>");
              out.println("</table>");
              out.println("</center>"); 
+             out.println("<br>");
+             out.println("<br>");
+             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
+            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
+            		 	"<br>" +
+            		 	"<input type=submit name=\"DBChange\" value=\"owner update\">" + 
+             			"<input type=submit name=\"DBChange\" value=\"owner create\">" + 
+             			"<input type=submit name=\"DBChange\" value=\"owner delete\">" + 
+             			"</form>");
              r.close();
             }
             else out.println("You Deselected All the boxes.  TRY AGAIN!");

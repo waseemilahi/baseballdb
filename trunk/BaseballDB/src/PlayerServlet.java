@@ -190,11 +190,18 @@ public class PlayerServlet extends HttpServlet {
              out.println("</div></form>");
              out.println("</table>");
              out.println("</center>");
-             
+             out.println("<br>");
+             out.println("<br>");
+             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
+            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
+            		 	"<br>" +
+            		 	"<input type=submit name=\"DBChange\" value=\"player update\">" + 
+             			"<input type=submit name=\"DBChange\" value=\"player create\">" + 
+             			"<input type=submit name=\"DBChange\" value=\"player delete\">" + 
+             			"</form>");
              r.close();
-             }
-             else out.println("You Deselected All the boxes.  TRY AGAIN!");
-             
+            }
+            else out.println("You Deselected All the boxes.  TRY AGAIN!");
              s.close();
              conn.close();
 
@@ -204,7 +211,6 @@ public class PlayerServlet extends HttpServlet {
             out.println("More information is available as follows:<br>");
             e.printStackTrace(out);
     }
-
 	}
 
 }

@@ -144,12 +144,21 @@ public class BallparkServlet extends HttpServlet {
              out.println("</div></form>");
              out.println("</table>");
              out.println("</center>");
-             
+             out.println("<br>");
+             out.println("<br>");
+             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
+            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
+            		 	"<br>" +
+            		 	"<input type=submit name=\"DBChange\" value=\"ballpark update\">" + 
+             			"<input type=submit name=\"DBChange\" value=\"ballpark create\">" + 
+             			"<input type=submit name=\"DBChange\" value=\"ballpark delete\">" + 
+             			"</form>");
              r.close();
-             }
-             else out.println("You Deselected All the boxes.  TRY AGAIN!");
+            }
+            else out.println("You Deselected All the boxes.  TRY AGAIN!");
              s.close();
              conn.close();
+
 
     }
     catch (Exception e) {
