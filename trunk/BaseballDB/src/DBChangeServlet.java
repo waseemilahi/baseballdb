@@ -44,6 +44,10 @@ public class DBChangeServlet extends HttpServlet {
      	   	RequestDispatcher dispatcher=request.getRequestDispatcher( "/AgentNew.jsp" );
      	   	dispatcher.forward( request, response );
         }//submission of create tuple-Agent
+        else if(formReq.equals("Agent Update View")){
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/AgentServlet" );
+     	   	dispatcher.forward( request, response );
+        }
         else if(formReq.equals("agent create submit")){
         	String[] args = new String[3];
         	//Name
@@ -57,7 +61,13 @@ public class DBChangeServlet extends HttpServlet {
         else if(formReq.equals("agent update")){
         	
         }else if(formReq.equals("agent delete")){
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/AgentDelete" );
+     	   	dispatcher.forward( request, response );
         	
+        }
+        else if(formReq.equals("Ballpark Update View")){
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/BallparkServlet" );
+     	   	dispatcher.forward( request, response );
         }
         else if(formReq.equals("ballpark create")){
      	   	RequestDispatcher dispatcher=request.getRequestDispatcher( "/BallparkNew.jsp" );
@@ -91,7 +101,12 @@ public class DBChangeServlet extends HttpServlet {
         else if(formReq.equals("ballpark update")){
         	
         }else if(formReq.equals("ballpark delete")){
-        	
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/BallparkDelete" );
+     	   	dispatcher.forward( request, response );
+        }
+        else if(formReq.equals("Division Update View")){
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/DivisionServlet" );
+     	   	dispatcher.forward( request, response );
         }
         else if(formReq.equals("division create")){
      	   	RequestDispatcher dispatcher=request.getRequestDispatcher( "/DivisionNew.jsp" );
@@ -109,6 +124,9 @@ public class DBChangeServlet extends HttpServlet {
         else if(formReq.equals("division update")){
         	
         }else if(formReq.equals("division delete")){
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/DivisionDelete" );
+     	   	dispatcher.forward( request, response );
+     	   
         	
         }
         else if(formReq.equals("owner create")){
@@ -173,7 +191,12 @@ public class DBChangeServlet extends HttpServlet {
         	
         }else if(formReq.equals("team delete")){
         	
-        }   else if(formReq.equals("player create")){
+        } 
+        else if(formReq.equals("Player Update View")){
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/PlayerServlet" );
+     	   	dispatcher.forward( request, response );
+        }
+        else if(formReq.equals("player create")){
      	   	RequestDispatcher dispatcher=getServletContext().getRequestDispatcher( "/PlayerNew" );
      	   	dispatcher.forward( request, response );
         }//submission of create tuple-Agent
@@ -193,7 +216,8 @@ public class DBChangeServlet extends HttpServlet {
         else if(formReq.equals("player update")){
         	
         }else if(formReq.equals("player delete")){
-        	
+        	RequestDispatcher dispatcher=request.getRequestDispatcher( "/PlayerDelete" );
+     	   	dispatcher.forward( request, response );
         }
 	}
 	public boolean verifyErrors(String table, String[] args, HttpServletResponse response) throws IOException{
@@ -319,6 +343,87 @@ public class DBChangeServlet extends HttpServlet {
 	             System.out.println("Query: " + query);
 	             
 	             r = s.executeQuery(query);
+	             
+	             response.setContentType("text/html");
+	             PrintWriter out1 = response.getWriter();
+	              
+	              if(table.equals("AGENT")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"AgentServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"agent1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"agent2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"agent3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"agent4\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Agent Table\" checked>");
+	                  out1.println("</form>");
+	              }
+	              else if(table.equals("BALLPARK")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"BallparkServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"ballpark1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"ballpark2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"ballpark3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"ballpark4\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"ballpark5\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Ballpark Table\" checked>");
+	                  out1.println("</form>");
+	              }
+	              else if(table.equals("DIVISION")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"DivisionServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"division1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"division2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"division3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Division Table\" checked>");
+	                  out1.println("</form>");
+	              }
+	              else if(table.equals("OWNER")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"OwnerServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"owner1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"owner2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"owner3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"owner4\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Owner Table\" checked>");
+	                  out1.println("</form>");
+	              }
+	              else if(table.equals("STAFF")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"StaffServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"staff1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"staff2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"staff3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"staff4\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"staff5\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"staff6\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Staff Table\" checked>");
+	                  out1.println("</form>");
+	              }
+	              else if(table.equals("TEAM")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"TeamServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"team1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"team2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"team3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"team4\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"team5\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"team6\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Team Table\" checked>");
+	                  out1.println("</form>");
+	              }
+	              else if(table.equals("PLAYER")){
+	              out1.println("<BR><BR><BR>");
+	            out1.println( "<form action=\"PlayerServlet\" method = \"POST\">" );
+	              out1.println(" <input type=\"checkbox\" name=\"player1\" style= \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"player2\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"player3\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"player4\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"player5\" style = \"visibility:hidden\" checked> ");
+	                  out1.println(" <input type=\"checkbox\" name=\"player6\" style = \"visibility:hidden\" checked> ");
+	                  out1.println("<input type=\"submit\" value=\"View Updated Player Table\" checked>");
+	                  out1.println("</form>");
+	              }
+             
 	             r.close();
 	             s.close();
 	             conn.close();

@@ -63,24 +63,20 @@ public class BallparkServlet extends HttpServlet {
             String query = new String();
             Statement s = conn.createStatement();
             
-            if (request.getParameter("ballpark1") == null)
-            {
-            	checkBox1="";checkBox2 = "B.CAPACITY";
-            	count--;
-            }
+           
             if (request.getParameter("ballpark2") == null )
             {
-            	checkBox2="";if(count == 4)checkBox3 = "B.NAME";
+            	checkBox2="";
             	count--;
             }
             if (request.getParameter("ballpark3") == null)
             {
-            	checkBox3="";if(count == 3)checkBox4 = "B.YEARBUILT";
+            	checkBox3="";
             	count--;
             }
             if (request.getParameter("ballpark4") == null )
             {
-            	checkBox4="";if(count == 2)checkBox5 = "B.TYPE";
+            	checkBox4="";
             	count--;
             }
             if (request.getParameter("ballpark5") == null)
@@ -92,9 +88,7 @@ public class BallparkServlet extends HttpServlet {
             
             query = select1 + " FROM Ballpark B";
             
-            if(count > 0)
-            {
-
+           
              ResultSet r = s.executeQuery(query);
              
              out.println("<center>");
@@ -106,9 +100,10 @@ public class BallparkServlet extends HttpServlet {
              if(!checkBox3.equals(""))out.println("<td>" + "<b>Name</b>"  + "</td>");
              if(!checkBox4.equals(""))out.println("<td>" + "<b>Year Built</b>"  + "</td>");
              if(!checkBox5.equals(""))out.println("<td>" + "<b>Type</b>"  + "</td>");
+             out.println("<td><b>Choose Tuple</b></td>");
              
              out.println("</tr>");
-             
+             out.println("<form action=\"DBChangeServlet\" method=\"POST\" name = \"DBChange\">");
              int i=0;
              while(r.next()){
             	 out.println("<tr>");
@@ -117,16 +112,17 @@ public class BallparkServlet extends HttpServlet {
             	 out.println("<td>" + r.getString(i+1) + "</td>"); 
             	            	 
             	 }
+            	 out.println("<td><input type=\"radio\" name=\"BallparkButton\" value=\"" + r.getString(1) + "\" align=\"center\"></td>");
             	 
             	 out.println("</tr>");
              }
-             out.println( "<form action= \"BallparkServlet\" method = \"POST\"><div  align=\"center\">" );
+             //out.println( "<form action= \"BallparkServlet\" method = \"POST\"><div  align=\"center\">" );
              
              
              out.println("<tr>");
              
-             
-             if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"ballpark1\" checked> </td>");
+             out.println("<td><b>Deselect Columns</b></td>");
+             //if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"ballpark1\" checked> </td>");
              if(!checkBox2.equals(""))out.println("<td> <input type=\"checkbox\" name=\"ballpark2\" checked> </td>");
              if(!checkBox3.equals(""))out.println("<td> <input type=\"checkbox\" name=\"ballpark3\" checked> </td>");
              if(!checkBox4.equals(""))out.println("<td> <input type=\"checkbox\" name=\"ballpark4\" checked> </td>");
@@ -137,25 +133,18 @@ public class BallparkServlet extends HttpServlet {
              
              out.println("</tr>");
              out.println("</table>");
-             out.println("<table>");
              
-             out.println("<center><input type=\"submit\" value=\"Update View\" style=\"horizontal-align:middle;\"></center>");
              
-             out.println("</div></form>");
-             out.println("</table>");
-             out.println("</center>");
              out.println("<br>");
+             out.println("<input type=\"submit\" name=\"DBChange\" value=\"Ballpark Update View\" >");
              out.println("<br>");
-             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
-            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
-            		 	"<br>" +
-            		 	"<input type=submit name=\"DBChange\" value=\"ballpark update\">" + 
+             out.println("<input type=submit name=\"DBChange\" value=\"ballpark update\">" + 
              			"<input type=submit name=\"DBChange\" value=\"ballpark create\">" + 
              			"<input type=submit name=\"DBChange\" value=\"ballpark delete\">" + 
              			"</form>");
+             out.println("</center>");
              r.close();
-            }
-            else out.println("You Deselected All the boxes.  TRY AGAIN!");
+            
              s.close();
              conn.close();
 

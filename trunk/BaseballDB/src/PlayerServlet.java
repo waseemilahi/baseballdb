@@ -64,34 +64,29 @@ public class PlayerServlet extends HttpServlet {
             String query = new String();
             Statement s = conn.createStatement();
             
-            if (request.getParameter("player1") == null)
-            {
-            	checkBox1="";checkBox2 = "P.POSITION";
-            	count--;
-            }
             if (request.getParameter("player2") == null )
             {
-            	checkBox2="";if(count == 6)checkBox3 = "P.ADDRESS";
+            	checkBox2="";
             	count--;
             }
             if (request.getParameter("player3") == null)
             {
-            	checkBox3="";if(count == 5)checkBox4 = "P.NAME";
+            	checkBox3="";
             	count--;
             }
             if (request.getParameter("player4") == null )
             {
-            	checkBox4="";if(count == 4)checkBox5 = "P.SALARY";
+            	checkBox4="";
             	count--;
             }
             if (request.getParameter("player5") == null)
             {
-            	checkBox5="";if(count == 3)checkBox6 = "P.AGENT_ID";
+            	checkBox5="";
             	count--;
             }
             if (request.getParameter("player6") == null )
             {
-            	checkBox6="";if(count == 2)checkBox7 = "P.TEAM_ID";
+            	checkBox6="";
             	count--;
             }
             if (request.getParameter("player7") == null )
@@ -103,9 +98,6 @@ public class PlayerServlet extends HttpServlet {
             String select1 = "SELECT DISTINCT " + checkBox1 + checkBox2 + checkBox3 + checkBox4 + checkBox5 + checkBox6 + checkBox7;
             
             query = select1 + " FROM Player P";
-            
-            if(count >0)
-            {
             
              ResultSet r = s.executeQuery(query);
              
@@ -120,11 +112,16 @@ public class PlayerServlet extends HttpServlet {
              if(!checkBox5.equals(""))out.println("<td>" + "<b>Salary</b>"  + "</td>");
              if(!checkBox6.equals(""))out.println("<td>" + "<b>Agent ID</b>"  + "</td>");
              if(!checkBox7.equals(""))out.println("<td>" + "<b>Team ID</b>"  + "</td>");
+             out.println("<td><b>Choose Tuple</b></td>");
              out.println("</tr>");
              int is_agent_id = 0; 
              int is_team_id = 0;
              if(!checkBox6.equals("")){count--;is_agent_id++;}
              if(!checkBox7.equals("")){count--;is_team_id++;}
+            
+             
+             out.println("</tr>");
+             
              int i=0;
              while(r.next()){
             	 out.println("<tr>");
@@ -163,15 +160,16 @@ public class PlayerServlet extends HttpServlet {
                 	 
                 	 }
             	 }
+            	 
+            	 out.println("<form action=\"DBChangeServlet\" method=\"POST\" name = \"DBChange\">"); 
+            	 out.println("<td><input type=\"radio\" name=\"DeletePlayer\" value=\"" + r.getString(1) + "\" align=\"center\">"+r.getString(1)+"</td>");
             	 out.println("</tr>");
              }
-             out.println( "<form action= \"PlayerServlet\" method = \"POST\"><div  align=\"center\">" );
-             
-             
+                  
              out.println("<tr>");
-             
-             
-             if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player1\" checked> </td>");
+                          
+             out.println("<td><b>Deselect Columns</b></td>");
+             //if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player1\" checked> </td>");
              if(!checkBox2.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player2\" checked> </td>");
              if(!checkBox3.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player3\" checked> </td>");
              if(!checkBox4.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player4\" checked> </td>");
@@ -179,29 +177,18 @@ public class PlayerServlet extends HttpServlet {
              if(!checkBox6.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player6\" checked> </td>");
              if(!checkBox7.equals(""))out.println("<td> <input type=\"checkbox\" name=\"player7\" checked> </td>");
              
-             
-             
+                        
              out.println("</tr>");
              out.println("</table>");
-             out.println("<table>");
-             
-             out.println("<center><input type=\"submit\" value=\"Update View\" style=\"horizontal-align:middle;\"></center>");
-             
-             out.println("</div></form>");
-             out.println("</table>");
-             out.println("</center>");
              out.println("<br>");
+             out.println("<input type=\"submit\" name=\"DBChange\" value=\"Player Update View\" >");
              out.println("<br>");
-             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
-            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
-            		 	"<br>" +
-            		 	"<input type=submit name=\"DBChange\" value=\"player update\">" + 
+             out.println("<input type=submit name=\"DBChange\" value=\"player update\">" + 
              			"<input type=submit name=\"DBChange\" value=\"player create\">" + 
              			"<input type=submit name=\"DBChange\" value=\"player delete\">" + 
-             			"</form>");
+             			"</form></center>");
              r.close();
-            }
-            else out.println("You Deselected All the boxes.  TRY AGAIN!");
+            
              s.close();
              conn.close();
 

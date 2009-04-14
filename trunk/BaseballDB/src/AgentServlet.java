@@ -59,19 +59,15 @@ public class AgentServlet extends HttpServlet {
             String query = new String();
             Statement s = conn.createStatement();
             
-            if (request.getParameter("agent1") == null)
-            {
-            	checkBox1="";checkBox2 = "A.NAME";
-            	count--;
-            }
+           
             if (request.getParameter("agent2") == null )
             {
-            	checkBox2="";if(count == 3)checkBox3 = "A.ADDDRESS";
+            	checkBox2="";
             	count--;
             }
             if (request.getParameter("agent3") == null)
             {
-            	checkBox3="";if(count == 2)checkBox4 = "A.CORPORATION";
+            	checkBox3="";
             	count--;
             }
             if (request.getParameter("agent4") == null )
@@ -84,12 +80,12 @@ public class AgentServlet extends HttpServlet {
             
             query = select1 + " FROM Agent A";
 
-            if(count >0)
-            {
+            
             
              ResultSet r = s.executeQuery(query);
              
              out.println("<center>");
+             out.println("<form action=\"DBChangeServlet\" method=\"POST\" name = \"DBChange\">");
              out.println("<table border = \"2\">");
              out.println("<caption align=\"center\"><H1>Agents</H1></caption>");
              out.println("<tr>");
@@ -97,9 +93,10 @@ public class AgentServlet extends HttpServlet {
              if(!checkBox2.equals(""))out.println("<td>" + "<b>Name</b>"  + "</td>");
              if(!checkBox3.equals(""))out.println("<td>" + "<b>Address</b>"  + "</td>");
              if(!checkBox4.equals(""))out.println("<td>" + "<b>Corporation</b>"  + "</td>");
+             out.println("<td><b>Choose Tuple</b></td>");
              
              out.println("</tr>");
-             
+            
              int i=0;
              while(r.next()){
             	 out.println("<tr>");
@@ -108,16 +105,16 @@ public class AgentServlet extends HttpServlet {
             	 out.println("<td>" + r.getString(i+1) + "</td>"); 
             	            	 
             	 }
-            	             	 
+            	 out.println("<td><input type=\"radio\" name=\"Agent\" value=\"" + r.getString(1) + "\" align=\"center\"></td>");           	 
             	 out.println("</tr>");
              }
-             out.println( "<form action= \"AgentServlet\" method = \"POST\"><div  align=\"center\">" );
+             //out.println( "<form action= \"AgentServlet\" method = \"POST\"><div  align=\"center\">" );
              
              
              out.println("<tr>");
              
-             
-             if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"agent1\" checked> </td>");
+             out.println("<td><b>Deselect Columns</b></td>");
+            // if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"agent1\" checked> </td>");
              if(!checkBox2.equals(""))out.println("<td> <input type=\"checkbox\" name=\"agent2\" checked> </td>");
              if(!checkBox3.equals(""))out.println("<td> <input type=\"checkbox\" name=\"agent3\" checked> </td>");
              if(!checkBox4.equals(""))out.println("<td> <input type=\"checkbox\" name=\"agent4\" checked> </td>");             
@@ -125,25 +122,15 @@ public class AgentServlet extends HttpServlet {
              
              out.println("</tr>");
              out.println("</table>");
-             out.println("<table>");
-             
-             out.println("<center><input type=\"submit\" value=\"Update View\" style=\"horizontal-align:middle;\"></center>");
-             
-             out.println("</div></form>");
-             out.println("</table>");
-             out.println("</center>"); 
              out.println("<br>");
+             out.println("<input type=\"submit\" name=\"DBChange\" value=\"Agent Update View\" >");
              out.println("<br>");
-             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
-            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
-            		 	"<br>" +
-            		 	"<input type=submit name=\"DBChange\" value=\"agent update\">" + 
+             out.println("<input type=submit name=\"DBChange\" value=\"agent update\">" + 
              			"<input type=submit name=\"DBChange\" value=\"agent create\">" + 
              			"<input type=submit name=\"DBChange\" value=\"agent delete\">" + 
-             			"</form>");
+             			"</form></center>");
              r.close();
-            }
-            else out.println("You Deselected All the boxes.  TRY AGAIN!");
+            
              s.close();
              conn.close();
 

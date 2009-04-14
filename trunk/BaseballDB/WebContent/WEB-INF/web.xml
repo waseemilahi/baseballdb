@@ -249,4 +249,44 @@
     <servlet-name>PlayerNew</servlet-name>
     <url-pattern>/PlayerNew</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Delete a tuple from the table</description>
+    <display-name>DivisionDelete</display-name>
+    <servlet-name>DivisionDelete</servlet-name>
+    <servlet-class>DivisionDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DivisionDelete</servlet-name>
+    <url-pattern>/DivisionDelete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BallparkDelete</display-name>
+    <servlet-name>BallparkDelete</servlet-name>
+    <servlet-class>BallparkDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BallparkDelete</servlet-name>
+    <url-pattern>/BallparkDelete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PlayerDelete</display-name>
+    <servlet-name>PlayerDelete</servlet-name>
+    <servlet-class>PlayerDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PlayerDelete</servlet-name>
+    <url-pattern>/PlayerDelete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AgentDelete</display-name>
+    <servlet-name>AgentDelete</servlet-name>
+    <servlet-class>AgentDelete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AgentDelete</servlet-name>
+    <url-pattern>/AgentDelete</url-pattern>
+  </servlet-mapping>
 </web-app>

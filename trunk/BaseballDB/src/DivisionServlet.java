@@ -46,8 +46,7 @@ public class DivisionServlet extends HttpServlet {
         String checkBox1 = "D.DIV_ID";
         String checkBox2 = " , D.LEAGUE";
         String checkBox3 = " , D.LOCATION";
-        
-                
+                        
         try {
             OracleDataSource ods = new oracle.jdbc.pool.OracleDataSource();
             ods.setURL("jdbc:oracle:thin:@//w4111b.cs.columbia.edu:1521/ADB");
@@ -58,15 +57,15 @@ public class DivisionServlet extends HttpServlet {
             int count = 3;  
             String query = new String();
             Statement s = conn.createStatement();
-            
+           /* 
             if (request.getParameter("division1") == null)
             {
             	checkBox1="";checkBox2 = "D.LEAGUE";
             	count--;
-            }
+            }*/
             if (request.getParameter("division2") == null )
             {
-            	checkBox2="";if(count == 2)checkBox3 = "D.LOCATION";
+            	checkBox2="";
             	count--;
             }
             if (request.getParameter("division3") == null)
@@ -79,10 +78,7 @@ public class DivisionServlet extends HttpServlet {
             
             query = select1 + " FROM Division D";
 
-            if(count >0)
-            {
-            
-             ResultSet r = s.executeQuery(query);
+            ResultSet r = s.executeQuery(query);
              
              out.println("<center>");
              out.println("<table border = \"2\">");
@@ -91,9 +87,10 @@ public class DivisionServlet extends HttpServlet {
              if(!checkBox1.equals(""))out.println("<td>" + "<b>Division ID</b>"  + "</td>");
              if(!checkBox2.equals(""))out.println("<td>" + "<b>League</b>"  + "</td>");
              if(!checkBox3.equals(""))out.println("<td>" + "<b>Location</b>"  + "</td>");
+             out.println("<td><b>Choose Tuple</b></td>");
              
              out.println("</tr>");
-             
+             out.println("<form action=\"DBChangeServlet\" method=\"POST\" name = \"DBChange\">");
              int i=0;
              while(r.next()){
             	 out.println("<tr>");
@@ -102,40 +99,36 @@ public class DivisionServlet extends HttpServlet {
             	 out.println("<td>" + r.getString(i+1) + "</td>"); 
             	            	 
             	 }
+            	 out.println("<td><input type=\"radio\" name=\"Division\" value=\"" + r.getString(1) + "\" align=\"center\"></td>");
             	             	 
             	 out.println("</tr>");
              }
-             out.println( "<form action= \"DivisionServlet\" method = \"POST\"><div  align=\"center\">" );
+            // out.println( "<form action= \"DivisionServlet\" method = \"POST\"><div  align=\"center\"  name = \"DivisionForm\">" );
              
              
              out.println("<tr>");
              
-             
-             if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"division1\" checked> </td>");
+             out.println("<td><b>Deselect Columns</b></td>");
+             /*if(!checkBox1.equals(""))out.println("<td> <input type=\"checkbox\" name=\"division1\" style = \"visibility:hidden\" checked> </td>");*/
              if(!checkBox2.equals(""))out.println("<td> <input type=\"checkbox\" name=\"division2\" checked> </td>");
              if(!checkBox3.equals(""))out.println("<td> <input type=\"checkbox\" name=\"division3\" checked> </td>");
              
              out.println("</tr>");
+             //out.println("</div></form>");
              out.println("</table>");
-             out.println("<table>");
              
-             out.println("<center><input type=\"submit\" value=\"Update View\" style=\"horizontal-align:middle;\"></center>");
-             
-             out.println("</div></form>");
-             out.println("</table>");
-             out.println("</center>"); 
              out.println("<br>");
+             out.println("<input type=\"submit\" name=\"DBChange\" value=\"Division Update View\" >");
              out.println("<br>");
-             out.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
-            		 	"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">Actions</FONT>" + 
-            		 	"<br>" +
-            		 	"<input type=submit name=\"DBChange\" value=\"division update\">" + 
+             out.println("<input type=submit name=\"DBChange\" value=\"division update\">" + 
              			"<input type=submit name=\"DBChange\" value=\"division create\">" + 
              			"<input type=submit name=\"DBChange\" value=\"division delete\">" + 
+             			
              			"</form>");
+            
+             out.println("</center>"); 
              r.close();
-            }
-            else out.println("You Deselected All the boxes.  TRY AGAIN!");
+            
              s.close();
              conn.close();
 
