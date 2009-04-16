@@ -77,7 +77,7 @@ public class BallparkUpdate extends HttpServlet {
                              
             query = "UPDATE BALLPARK  SET " + checkBox2 + checkBox3 + checkBox4 + checkBox5 +  " WHERE PARK_ID = '"+ request.getParameter("BallPark")+"'"  ;
 
-            if(intYearCheck(response,"ballpark", request.getParameter("Year Built")))
+            if((request.getParameter("Year Built").length()==0) || intYearCheck(response,"ballpark", request.getParameter("Year Built")))
             {
             
             ResultSet r = s.executeQuery(query);
