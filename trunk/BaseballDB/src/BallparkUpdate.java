@@ -74,9 +74,12 @@ public class BallparkUpdate extends HttpServlet {
           if((checkBox2.length()!=0) && (checkBox4.length()!=0) || (checkBox3.length()!=0) && (checkBox4.length()!=0))checkBox4 = "," + checkBox4;
           if((checkBox2.length()!=0) && (checkBox5.length()!=0) || (checkBox3.length()!=0) && (checkBox5.length()!=0) || (checkBox4.length()!=0) && (checkBox5.length()!=0))checkBox5 = "," + checkBox5;
           
-                    
+                             
             query = "UPDATE BALLPARK  SET " + checkBox2 + checkBox3 + checkBox4 + checkBox5 +  " WHERE PARK_ID = '"+ request.getParameter("BallPark")+"'"  ;
 
+            if(intYearCheck(response,"ballpark", request.getParameter("Year Built")))
+            {
+            
             ResultSet r = s.executeQuery(query);
             
             out1.println("<BR><BR><BR>");
@@ -93,6 +96,7 @@ public class BallparkUpdate extends HttpServlet {
             
              s.close();
              conn.close();
+            }
 
 
     }
@@ -103,5 +107,39 @@ public class BallparkUpdate extends HttpServlet {
     }
 
 	}
+	
+	public boolean intYearCheck(HttpServletResponse response, String table, String year) throws IOException{
+		int tmpyear;
+    	try{
+    	tmpyear = Integer.parseInt(year);
+    	
+    	if(tmpyear<1000)
+    	{
+    		errorprint("<BR> Invalid Entry for Year Built Field! TRY AGAIN.<BR>",table,response);
+    	}
+    	else return true;
+    	}
+    	catch(NumberFormatException n)
+    	{
+    		errorprint("<BR>ENTER A FOUR DIGIT NUMBER FOR THE YEAR BUILT FIELD.<BR>",table,response);
+    	}
+    	return false;
+	}
+	public void errorprint(String message,String tableType,HttpServletResponse response )throws IOException {
+
+		response.setContentType("text/html");
+		PrintWriter out1 = response.getWriter();
+		out1.println(message);
+		out1.println("<form action=\"DBChangeServlet\" method=\"POST\">" +
+				"<br>" +
+				"<br>" +
+		"<FONT SIZE=\"3\" COLOR=\"#006600\" FACE=\"verdana\">" +
+		
+		"<br>" +
+		"<input type=submit name=\"DBChange\" value=\""+ tableType + " update\">" +
+		"<input type=submit name=\"DBChange\" value=\""+ tableType + " create\">" +
+		"<input type=submit name=\"DBChange\" value=\""+ tableType + " delete\">" +
+		"</FONT></form>");
+		}
 
 }
