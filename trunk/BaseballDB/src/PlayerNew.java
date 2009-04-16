@@ -110,7 +110,7 @@ public class PlayerNew extends HttpServlet {
     		    "</TR>" +
     		    "<TR>" + 
 		    		"<TD>Salary</TD>" + 
-		    		"<TD><INPUT TYPE=\"TEXT\" NAME=\"SALARY\" maxlength = \"11\"></TD>" + 
+		    		"<TD><INPUT TYPE=\"TEXT\" NAME=\"SALARY\" maxlength = \"8\"></TD>" + 
 		    	"</TR>" + 
         		"<TR>" + 
         		    "<TD>Address</TD>" +
