@@ -152,9 +152,9 @@ public class DBChangeServlet extends HttpServlet {
         	//Corporation
         	args[2] = request.getParameter("TEAM");
         	//createNewTuple("OWNER",args, response);
-        	//if(verifyErrors("owner",args,response)){
+        	if(verifyErrors("owner",args,response)){
         		createNewTuple("OWNER",args,response);
-        	//}
+        	}
         }
         else if(formReq.equals("owner update submit")){
         	RequestDispatcher dispatcher=getServletContext().getRequestDispatcher( "/OwnerUpdate" );
@@ -208,9 +208,9 @@ public class DBChangeServlet extends HttpServlet {
         	args[3] = request.getParameter("PARK");
         	args[4] = request.getParameter("STAFF");
         	//createNewTuple("TEAM",args, response);
-        	//if(verifyErrors("team",args,response)){
+        	if(verifyErrors("team",args,response)){
         		createNewTuple("TEAM",args,response);
-        	//}
+        	}
         }
         else if(formReq2.equals("team update")){
         	RequestDispatcher dispatcher=request.getRequestDispatcher( "/TeamUpdatePartial" );
@@ -240,9 +240,9 @@ public class DBChangeServlet extends HttpServlet {
         	args[4] = request.getParameter("AGENT");
         	args[5] = request.getParameter("TEAM");
         	//createNewTuple("PLAYER",args, response);
-        	//if(verifyErrors("player",args,response)){
+        	if(verifyErrors("player",args,response)){
         		createNewTuple("PLAYER",args,response);
-        	//}
+        	}
         }
         else if(formReq2.equals("player update")){
         	RequestDispatcher dispatcher=request.getRequestDispatcher( "/PlayerUpdatePartial" );
