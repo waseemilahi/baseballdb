@@ -260,7 +260,9 @@ public class DBChangeServlet extends HttpServlet {
 	public boolean verifyErrors(String table, String[] args, HttpServletResponse response) throws IOException{
 		boolean verified = false;
 		if(table.equals("ballpark")){
-			verified = intYearCheck(response, table, args, args[2]);
+			if(intYearCheck(response, table, args, args[2])){
+			verified = intCapacityCheck(response, table, args, args[0]);
+			}
 		}else if(table.equals("agent")){
 			verified = true; // No checks needed
 		}else if(table.equals("division")){
@@ -273,6 +275,25 @@ public class DBChangeServlet extends HttpServlet {
 			verified = intSalaryCheck(args[2], response, table, args, 0, new BigInteger("100000000"));
 		}
 		return verified;
+	}
+	public boolean intCapacityCheck( HttpServletResponse response,String table,String[] args,String capacity)throws IOException
+	{
+		
+		int tmpcap;
+    	try{
+    	tmpcap = Integer.parseInt(capacity);
+    	
+    	if(tmpcap<0 || tmpcap > 65000)
+    	{
+    		errorprint("<BR> Invalid Entry for Capacity Field! TRY AGAIN.<BR>",table,response);
+    	}
+    	else return true;
+    	}
+    	catch(NumberFormatException n)
+    	{
+    		errorprint("<BR>ENTER A Five DIGIT NUMBER FOR THE Capacity FIELD.<BR>",table,response);
+    	}
+    	return false;
 	}
 	public boolean intYearCheck(HttpServletResponse response, String table, String[] args, String year) throws IOException{
 		int tmpyear;
