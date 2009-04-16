@@ -127,7 +127,7 @@ public class TeamUpdatePartial extends HttpServlet {
         		"</TR>" + 
         		"<TR>" + 
         		    "<TD>State</TD>" +
-        		    "<TD><INPUT TYPE=\"TEXT\" NAME=\"STATE\" maxlength = \"20\"></TD>" + 
+        		    "<TD><INPUT TYPE=\"TEXT\" NAME=\"STATE\" maxlength = \"2\"></TD>" + 
         		"</TR>" + 
         		    "<TR>" + 
             	    "<TD>Park ID</TD>" + 
