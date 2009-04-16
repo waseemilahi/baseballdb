@@ -77,7 +77,8 @@ public class BallparkUpdate extends HttpServlet {
                              
             query = "UPDATE BALLPARK  SET " + checkBox2 + checkBox3 + checkBox4 + checkBox5 +  " WHERE PARK_ID = '"+ request.getParameter("BallPark")+"'"  ;
 
-            if((request.getParameter("Year Built").length()==0) || intYearCheck(response,"ballpark", request.getParameter("Year Built")))
+            if((request.getParameter("Year Built").length()==0) || intYearCheck(response,"ballpark", request.getParameter("Year Built"))){
+               if((request.getParameter("CAPACITY").length()==0) || intCapacityCheck(response,"ballpark",request.getParameter("CAPACITY")))
             {
             
             ResultSet r = s.executeQuery(query);
@@ -97,7 +98,7 @@ public class BallparkUpdate extends HttpServlet {
              s.close();
              conn.close();
             }
-
+            }
 
     }
     catch (Exception e) {
@@ -107,7 +108,25 @@ public class BallparkUpdate extends HttpServlet {
     }
 
 	}
-	
+	public boolean intCapacityCheck( HttpServletResponse response,String table,String capacity)throws IOException
+	{
+		
+		int tmpcap;
+    	try{
+    	tmpcap = Integer.parseInt(capacity);
+    	
+    	if(tmpcap<0 || tmpcap > 65000)
+    	{
+    		errorprint("<BR> Invalid Entry for Capacity Field! TRY AGAIN.<BR>",table,response);
+    	}
+    	else return true;
+    	}
+    	catch(NumberFormatException n)
+    	{
+    		errorprint("<BR>ENTER A Five DIGIT NUMBER FOR THE Capacity FIELD.<BR>",table,response);
+    	}
+    	return false;
+	}
 	public boolean intYearCheck(HttpServletResponse response, String table, String year) throws IOException{
 		int tmpyear;
     	try{
